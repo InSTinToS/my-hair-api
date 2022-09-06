@@ -1,0 +1,50 @@
+scalar DateTime
+scalar Bytes
+
+type User {
+  id: String!
+  email: String!
+  username: String!
+  password: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  avatar: Bytes
+  full_name: String
+  users: [Business]
+}
+
+input ReadUserInput {
+  id: String
+  email: String
+  username: String
+}
+
+input CreateUserInput {
+  email: String!
+  username: String!
+  password: String!
+}
+
+input DeleteUserInput {
+  id: String!
+}
+
+input UpdateUserInput {
+  id: String!
+  email: String
+  avatar: Bytes
+  username: String
+  password: String
+  full_name: String
+}
+
+type Query {
+  users: [User]
+  user(readUserInput: ReadUserInput): User
+}
+
+type Mutation {
+  deleteUser(deleteUserInput: DeleteUserInput!): User!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+}

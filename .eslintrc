@@ -1,0 +1,13 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "env": { "node": true, "jest": true },
+  "plugins": ["@typescript-eslint/eslint-plugin"],
+  "parserOptions": { "sourceType": "module", "project": "tsconfig.json" },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
+  }
+}
