@@ -8,13 +8,25 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export interface LocationInput {
+    link?: Nullable<string>;
+    state?: Nullable<string>;
+    street?: Nullable<string>;
+    number?: Nullable<string>;
+    country?: Nullable<string>;
+    complement?: Nullable<string>;
+}
+
 export interface CreateBusinessInput {
     name: string;
     admins_ids?: Nullable<Nullable<string>[]>;
+    locations?: Nullable<Nullable<LocationInput>[]>;
 }
 
 export interface UpdateBusinessInput {
-    id: string;
+    name: string;
+    admins_ids?: Nullable<Nullable<string>[]>;
+    locations?: Nullable<Nullable<LocationInput>[]>;
 }
 
 export interface ReadUserInput {
@@ -42,10 +54,21 @@ export interface UpdateUserInput {
     full_name?: Nullable<string>;
 }
 
+export interface Location {
+    link?: Nullable<string>;
+    state?: Nullable<string>;
+    street?: Nullable<string>;
+    number?: Nullable<string>;
+    country?: Nullable<string>;
+    complement?: Nullable<string>;
+}
+
 export interface Business {
     id?: Nullable<string>;
     name: string;
+    thumbnail?: Nullable<string>;
     admins_ids?: Nullable<Nullable<string>[]>;
+    locations?: Nullable<Nullable<Location>[]>;
 }
 
 export interface IQuery {

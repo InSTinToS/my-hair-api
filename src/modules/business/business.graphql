@@ -1,16 +1,39 @@
+type Location {
+  link: String
+  state: String
+  street: String
+  number: String
+  country: String
+  complement: String
+}
+
 type Business {
   id: String
   name: String!
+  thumbnail: String
   admins_ids: [String]
+  locations: [Location]
+}
+
+input LocationInput {
+  link: String
+  state: String
+  street: String
+  number: String
+  country: String
+  complement: String
 }
 
 input CreateBusinessInput {
   name: String!
   admins_ids: [String]
+  locations: [LocationInput]
 }
 
 input UpdateBusinessInput {
-  id: String!
+  name: String!
+  admins_ids: [String]
+  locations: [LocationInput]
 }
 
 type Query {

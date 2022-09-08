@@ -24,13 +24,24 @@ model User {
 }
 
 model Business {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  name       String   @unique
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
+  name       String     @unique
+  thumbnail  String?
+  locations  Location[]
 
   admins_ids String[] @db.ObjectId
   admins     User[]   @relation(fields: [admins_ids], references: [id])
 
   @@map("businesses")
+}
+
+type Location {
+  link       String?
+  state      String?
+  street     String?
+  number     String?
+  country    String?
+  complement String?
 }
