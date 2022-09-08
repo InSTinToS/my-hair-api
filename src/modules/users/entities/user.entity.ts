@@ -1,4 +1,5 @@
 import { User as UserGQL } from '@shared/graphql'
+import { BusinessEntity } from '@src/modules/business/entities/business.entity'
 import {
   IsAlphanumeric,
   IsBase64,
@@ -36,4 +37,6 @@ export class UserEntity implements UserGQL {
   @IsOptional()
   @Matches(/^[a-z ]+$/i, { message: 'Invalid full_name' })
   full_name?: string
+
+  business_ids?: BusinessEntity['id'][]
 }

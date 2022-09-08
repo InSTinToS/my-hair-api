@@ -7,7 +7,7 @@ import { UpdateBusinessDTO } from './dto/update-business.dto'
 export class BusinessResolver {
   constructor(private readonly businessService: BusinessService) {}
 
-  @Query('business')
+  @Query('businesses')
   findAll() {
     return this.businessService.readBusinesses()
   }
@@ -19,14 +19,14 @@ export class BusinessResolver {
 
   @Mutation('createBusiness')
   create(@Args('createBusinessInput') createBusinessInput: CreateBusinessDTO) {
-    this.businessService.create(createBusinessInput)
+    return this.businessService.create(createBusinessInput)
   }
 
   @Mutation('updateBusiness')
   update(@Args('updateBusinessInput') updateBusinessInput: UpdateBusinessDTO) {}
 
   @Mutation('removeBusiness')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.businessService.remove(id)
   }
 }

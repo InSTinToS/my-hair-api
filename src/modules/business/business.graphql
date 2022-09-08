@@ -1,11 +1,11 @@
 type Business {
   id: String
   name: String!
-  admins: [User]
+  admins_ids: [String]
 }
 
 input CreateBusinessInput {
-  name: String
+  name: String!
   admins_ids: [String]
 }
 
@@ -14,8 +14,8 @@ input UpdateBusinessInput {
 }
 
 type Query {
-  business: [Business]!
-  businesses(id: String!): Business
+  businesses: [Business]!
+  business(id: String!): Business
 }
 
 type Mutation {

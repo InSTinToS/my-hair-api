@@ -10,7 +10,7 @@ type User {
   updated_at: DateTime!
   avatar: Bytes
   full_name: String
-  users: [Business]
+  businesses_ids: [String]
 }
 
 input ReadUserInput {

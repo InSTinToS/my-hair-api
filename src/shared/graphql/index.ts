@@ -9,7 +9,7 @@
 /* eslint-disable */
 
 export interface CreateBusinessInput {
-    name?: Nullable<string>;
+    name: string;
     admins_ids?: Nullable<Nullable<string>[]>;
 }
 
@@ -45,12 +45,12 @@ export interface UpdateUserInput {
 export interface Business {
     id?: Nullable<string>;
     name: string;
-    admins?: Nullable<Nullable<User>[]>;
+    admins_ids?: Nullable<Nullable<string>[]>;
 }
 
 export interface IQuery {
-    business(): Nullable<Business>[] | Promise<Nullable<Business>[]>;
-    businesses(id: string): Nullable<Business> | Promise<Nullable<Business>>;
+    businesses(): Nullable<Business>[] | Promise<Nullable<Business>[]>;
+    business(id: string): Nullable<Business> | Promise<Nullable<Business>>;
     users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
     user(readUserInput?: Nullable<ReadUserInput>): Nullable<User> | Promise<Nullable<User>>;
 }
@@ -73,7 +73,7 @@ export interface User {
     updated_at: DateTime;
     avatar?: Nullable<Bytes>;
     full_name?: Nullable<string>;
-    users?: Nullable<Nullable<Business>[]>;
+    businesses_ids?: Nullable<Nullable<string>[]>;
 }
 
 export type DateTime = any;
