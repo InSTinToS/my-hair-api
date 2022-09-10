@@ -3,14 +3,20 @@ import { PrismaService } from '@src/shared/prisma/prisma.service'
 import { CreateBusinessDTO } from './dto/create-business.dto'
 
 import { UpdateBusinessDTO } from './dto/update-business.dto'
+import { ObjectID } from 'bson'
 
 @Injectable()
 export class BusinessService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(dataToCreate: CreateBusinessDTO) {
+    const locationsWithId = dataToCreate.locations.map(data => ({
+      ...data,
+      id: new ObjectID().toString()
+    }))
+
     const createdBusiness = await this.prismaService.business.create({
-      data: dataToCreate
+      data: { ...dataToCreate, locations: locationsWithId }
     })
 
     createdBusiness.admins_ids.map(
@@ -24,8 +30,14 @@ export class BusinessService {
     return createdBusiness
   }
 
+  findUserBusinesses(businessesIds: string[]) {
+    return businessesIds.map(id =>
+      this.prismaService.business.findUnique({ where: { id } })
+    )
+  }
+
   readBusinesses() {
-    return this.prismaService.user.findMany()
+    return this.prismaService.business.findMany()
   }
 
   readBusiness(id: string) {

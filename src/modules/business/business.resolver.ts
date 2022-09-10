@@ -7,6 +7,11 @@ import { UpdateBusinessDTO } from './dto/update-business.dto'
 export class BusinessResolver {
   constructor(private readonly businessService: BusinessService) {}
 
+  @Query('userBusinesses')
+  findUserBusinesses(@Args('businessesIds') businessesIds: string[]) {
+    return this.businessService.findUserBusinesses(businessesIds)
+  }
+
   @Query('businesses')
   findAll() {
     return this.businessService.readBusinesses()

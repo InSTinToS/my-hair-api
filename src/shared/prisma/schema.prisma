@@ -38,10 +38,11 @@ model Business {
 }
 
 type Location {
+  id         String  @map("_id") @db.ObjectId
+  state      String
+  street     String
+  number     String
+  country    String
   link       String?
-  state      String?
-  street     String?
-  number     String?
-  country    String?
   complement String?
 }

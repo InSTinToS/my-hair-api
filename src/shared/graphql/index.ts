@@ -55,11 +55,12 @@ export interface UpdateUserInput {
 }
 
 export interface Location {
+    id: string;
     link?: Nullable<string>;
-    state?: Nullable<string>;
-    street?: Nullable<string>;
-    number?: Nullable<string>;
-    country?: Nullable<string>;
+    state: string;
+    street: string;
+    number: string;
+    country: string;
     complement?: Nullable<string>;
 }
 
@@ -67,13 +68,14 @@ export interface Business {
     id?: Nullable<string>;
     name: string;
     thumbnail?: Nullable<string>;
-    admins_ids?: Nullable<Nullable<string>[]>;
     locations?: Nullable<Nullable<Location>[]>;
+    admins_ids: string[];
 }
 
 export interface IQuery {
     businesses(): Nullable<Business>[] | Promise<Nullable<Business>[]>;
     business(id: string): Nullable<Business> | Promise<Nullable<Business>>;
+    userBusinesses(businessesIds?: Nullable<string[]>): Nullable<Business>[] | Promise<Nullable<Business>[]>;
     users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
     user(readUserInput?: Nullable<ReadUserInput>): Nullable<User> | Promise<Nullable<User>>;
 }

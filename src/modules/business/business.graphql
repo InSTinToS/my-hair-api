@@ -1,9 +1,10 @@
 type Location {
+  id: String!
   link: String
-  state: String
-  street: String
-  number: String
-  country: String
+  state: String!
+  street: String!
+  number: String!
+  country: String!
   complement: String
 }
 
@@ -11,8 +12,8 @@ type Business {
   id: String
   name: String!
   thumbnail: String
-  admins_ids: [String]
   locations: [Location]
+  admins_ids: [String!]!
 }
 
 input LocationInput {
@@ -39,6 +40,7 @@ input UpdateBusinessInput {
 type Query {
   businesses: [Business]!
   business(id: String!): Business
+  userBusinesses(businessesIds: [String!]): [Business]!
 }
 
 type Mutation {
