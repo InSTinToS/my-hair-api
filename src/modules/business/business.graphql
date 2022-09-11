@@ -25,26 +25,52 @@ input LocationInput {
   complement: String
 }
 
+input ReadBusinessesInput {
+  ids: [String]
+}
+
+input ReadBusinessInput {
+  id: String!
+}
+
 input CreateBusinessInput {
   name: String!
-  admins_ids: [String]
+  thumbnail: String
+  admins_ids: [String!]!
   locations: [LocationInput]
 }
 
 input UpdateBusinessInput {
-  name: String!
+  id: String!
+  name: String
+  thumbnail: String
   admins_ids: [String]
   locations: [LocationInput]
 }
 
+input DeleteBusinessInput {
+  id: String!
+}
+
+input AddLocationsInput {
+  businessId: String!
+  locations: [LocationInput!]!
+}
+
+input DeleteLocationsInput {
+  businessId: String!
+  locationsIds: [String!]!
+}
+
 type Query {
-  businesses: [Business]!
-  business(id: String!): Business
-  userBusinesses(businessesIds: [String!]): [Business]!
+  business(readBusinessInput: ReadBusinessInput!): Business
+  businesses(readBusinessesInput: ReadBusinessesInput): [Business]!
 }
 
 type Mutation {
-  removeBusiness(id: String!): Business
+  addLocations(addLocationsInput: AddLocationsInput!): Business!
+  deleteBusiness(deleteBusinessInput: DeleteBusinessInput!): Business!
   createBusiness(createBusinessInput: CreateBusinessInput!): Business!
   updateBusiness(updateBusinessInput: UpdateBusinessInput!): Business!
+  deleteLocations(deleteLocationsInput: DeleteLocationsInput!): Business!
 }

@@ -1,37 +1,59 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
 import { BusinessService } from './business.service'
-import { CreateBusinessDTO } from './dto/create-business.dto'
-import { UpdateBusinessDTO } from './dto/update-business.dto'
+import { AddLocationsDTO } from './dto/addLocations.dto'
+import { CreateBusinessDTO } from './dto/createBusiness.dto'
+import { DeleteBusinessDTO } from './dto/deleteBusiness.dto'
+import { DeleteLocationsDTO } from './dto/deleteLocations.dto'
+import { ReadBusinessDTO } from './dto/readBusiness.dto'
+import { ReadBusinessesDTO } from './dto/readBusinesses.dto'
+import { UpdateBusinessDTO } from './dto/updateBusiness.dto'
 
 @Resolver('Business')
 export class BusinessResolver {
   constructor(private readonly businessService: BusinessService) {}
 
-  @Query('userBusinesses')
-  findUserBusinesses(@Args('businessesIds') businessesIds: string[]) {
-    return this.businessService.findUserBusinesses(businessesIds)
-  }
-
   @Query('businesses')
-  findAll() {
-    return this.businessService.readBusinesses()
+  readBusinesses(
+    @Args('readBusinessInput') readBusinessDTO: ReadBusinessesDTO
+  ) {
+    return this.businessService.readBusinesses(readBusinessDTO)
   }
 
   @Query('business')
-  findOne(@Args('id') id: string) {
-    return this.businessService.readBusiness(id)
+  readBusiness(@Args('readBusinessInput') readBusinessDTO: ReadBusinessDTO) {
+    return this.businessService.readBusiness(readBusinessDTO)
   }
 
   @Mutation('createBusiness')
-  create(@Args('createBusinessInput') createBusinessInput: CreateBusinessDTO) {
-    return this.businessService.create(createBusinessInput)
+  createBusiness(
+    @Args('createBusinessInput') createBusinessDTO: CreateBusinessDTO
+  ) {
+    return this.businessService.createBusiness(createBusinessDTO)
   }
 
   @Mutation('updateBusiness')
-  update(@Args('updateBusinessInput') updateBusinessInput: UpdateBusinessDTO) {}
+  updateBusiness(
+    @Args('updateBusinessInput') updateBusinessDTO: UpdateBusinessDTO
+  ) {
+    return this.businessService.updateBusiness(updateBusinessDTO)
+  }
 
-  @Mutation('removeBusiness')
-  remove(@Args('id') id: string) {
-    return this.businessService.remove(id)
+  @Mutation('deleteBusiness')
+  deleteBusiness(
+    @Args('deleteBusinessInput') deleteBusinessDTO: DeleteBusinessDTO
+  ) {
+    return this.businessService.deleteBusiness(deleteBusinessDTO)
+  }
+
+  @Mutation('addLocations')
+  addLocations(@Args('addLocationsInput') addLocationsDTO: AddLocationsDTO) {
+    return this.businessService.addLocations(addLocationsDTO)
+  }
+
+  @Mutation('deleteLocations')
+  deleteLocations(
+    @Args('deleteLocationsInput') deleteLocationsDTO: DeleteLocationsDTO
+  ) {
+    return this.businessService.deleteLocations(deleteLocationsDTO)
   }
 }

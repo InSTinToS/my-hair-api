@@ -1,17 +1,19 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@src/shared/prisma/prisma.service'
-import { CreateBusinessDTO } from './dto/create-business.dto'
 
-import { UpdateBusinessDTO } from './dto/update-business.dto'
 import { ObjectID } from 'bson'
+import { UserEntity } from '../users/entities/user.entity'
+import { IBusinessService } from './types/IBusinessService.types'
 
 @Injectable()
 export class BusinessService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(dataToCreate: CreateBusinessDTO) {
-    const locationsWithId = dataToCreate.locations.map(data => ({
-      ...data,
+  createBusiness: IBusinessService['createBusiness'] = async dataToCreate => {
+    const { locations } = dataToCreate
+
+    const locationsWithId = locations.map(location => ({
+      ...location,
       id: new ObjectID().toString()
     }))
 
@@ -19,39 +21,70 @@ export class BusinessService {
       data: { ...dataToCreate, locations: locationsWithId }
     })
 
-    createdBusiness.admins_ids.map(
-      async adminId =>
-        await this.prismaService.user.update({
-          where: { id: adminId },
-          data: { businesses: { connect: { id: createdBusiness.id } } }
-        })
-    )
+    const connectBusinessWithUser = async (adminId: UserEntity['id']) =>
+      await this.prismaService.user.update({
+        where: { id: adminId },
+        data: { businesses: { connect: { id: createdBusiness.id } } }
+      })
+
+    createdBusiness.admins_ids.map(connectBusinessWithUser)
 
     return createdBusiness
   }
 
-  findUserBusinesses(businessesIds: string[]) {
-    return businessesIds.map(id =>
-      this.prismaService.business.findUnique({ where: { id } })
-    )
-  }
+  readBusinesses: IBusinessService['readBusinesses'] = async dto => {
+    const ids = dto?.ids
 
-  readBusinesses() {
+    if (ids) {
+      const foundBusinesses = await this.prismaService.business.findMany({
+        where: { id: { in: ids } }
+      })
+
+      return foundBusinesses
+    }
+
     return this.prismaService.business.findMany()
   }
 
-  readBusiness(id: string) {
-    return this.prismaService.business.findUnique({ where: { id } })
-  }
+  readBusiness: IBusinessService['readBusiness'] = ({ id }) =>
+    this.prismaService.business.findUnique({ where: { id } })
 
-  update(id: string, updateData: UpdateBusinessDTO) {
-    return this.prismaService.business.update({
+  updateBusiness: IBusinessService['updateBusiness'] = ({
+    id,
+    locations,
+    ...dataToUpdate
+  }) =>
+    this.prismaService.business.update({
       where: { id },
-      data: updateData
+      data: { ...dataToUpdate }
+    })
+
+  deleteBusiness: IBusinessService['deleteBusiness'] = ({ id }) =>
+    this.prismaService.business.delete({ where: { id } })
+
+  addLocations: IBusinessService['addLocations'] = ({
+    businessId,
+    locations
+  }) => {
+    const locationsWithId = locations?.map(location => ({
+      ...location,
+      id: new ObjectID().toString()
+    }))
+
+    return this.prismaService.business.update({
+      where: { id: businessId },
+      data: { locations: { push: locationsWithId } }
     })
   }
 
-  remove(id: string) {
-    return this.prismaService.business.delete({ where: { id } })
-  }
+  deleteLocations: IBusinessService['deleteLocations'] = ({
+    businessId,
+    locationsIds
+  }) =>
+    this.prismaService.business.update({
+      where: { id: businessId },
+      data: {
+        locations: { deleteMany: { where: { id: { in: locationsIds } } } }
+      }
+    })
 }

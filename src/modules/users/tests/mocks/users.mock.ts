@@ -1,6 +1,6 @@
 import { CreateUserDTO } from '@modules/users/dtos/create-user.dto'
 import { UserEntity } from '@modules/users/entities/user.entity'
-import { IUsersService } from '@modules/users/types/IUsersService.types'
+import { IUsersService } from '@src/modules/users/types/IUsersService.types'
 
 import { ObjectId } from 'mongodb'
 

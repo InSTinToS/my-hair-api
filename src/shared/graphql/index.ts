@@ -17,16 +17,41 @@ export interface LocationInput {
     complement?: Nullable<string>;
 }
 
+export interface ReadBusinessesInput {
+    ids?: Nullable<Nullable<string>[]>;
+}
+
+export interface ReadBusinessInput {
+    id: string;
+}
+
 export interface CreateBusinessInput {
     name: string;
-    admins_ids?: Nullable<Nullable<string>[]>;
+    thumbnail?: Nullable<string>;
+    admins_ids: string[];
     locations?: Nullable<Nullable<LocationInput>[]>;
 }
 
 export interface UpdateBusinessInput {
-    name: string;
+    id: string;
+    name?: Nullable<string>;
+    thumbnail?: Nullable<string>;
     admins_ids?: Nullable<Nullable<string>[]>;
     locations?: Nullable<Nullable<LocationInput>[]>;
+}
+
+export interface DeleteBusinessInput {
+    id: string;
+}
+
+export interface AddLocationsInput {
+    businessId: string;
+    locations: LocationInput[];
+}
+
+export interface DeleteLocationsInput {
+    businessId: string;
+    locationsIds: string[];
 }
 
 export interface ReadUserInput {
@@ -73,17 +98,18 @@ export interface Business {
 }
 
 export interface IQuery {
-    businesses(): Nullable<Business>[] | Promise<Nullable<Business>[]>;
-    business(id: string): Nullable<Business> | Promise<Nullable<Business>>;
-    userBusinesses(businessesIds?: Nullable<string[]>): Nullable<Business>[] | Promise<Nullable<Business>[]>;
+    business(readBusinessInput: ReadBusinessInput): Nullable<Business> | Promise<Nullable<Business>>;
+    businesses(readBusinessesInput?: Nullable<ReadBusinessesInput>): Nullable<Business>[] | Promise<Nullable<Business>[]>;
     users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
     user(readUserInput?: Nullable<ReadUserInput>): Nullable<User> | Promise<Nullable<User>>;
 }
 
 export interface IMutation {
-    removeBusiness(id: string): Nullable<Business> | Promise<Nullable<Business>>;
+    addLocations(addLocationsInput: AddLocationsInput): Business | Promise<Business>;
+    deleteBusiness(deleteBusinessInput: DeleteBusinessInput): Business | Promise<Business>;
     createBusiness(createBusinessInput: CreateBusinessInput): Business | Promise<Business>;
     updateBusiness(updateBusinessInput: UpdateBusinessInput): Business | Promise<Business>;
+    deleteLocations(deleteLocationsInput: DeleteLocationsInput): Business | Promise<Business>;
     deleteUser(deleteUserInput: DeleteUserInput): User | Promise<User>;
     createUser(createUserInput: CreateUserInput): User | Promise<User>;
     updateUser(updateUserInput: UpdateUserInput): User | Promise<User>;
